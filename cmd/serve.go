@@ -18,7 +18,7 @@ var runCmd = &cobra.Command{
 
 		scheduler.Start()
 		select {}
-	},
+	}
 }
 
 func init() {

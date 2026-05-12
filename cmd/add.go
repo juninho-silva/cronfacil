@@ -21,7 +21,6 @@ var addCmd = &cobra.Command{
 	Use:   "add",
 	Short: "Cria um novo job interativamente",
 	Run: func(cmd *cobra.Command, args []string) {
-
 		job := Job{}
 
 		// Nome
