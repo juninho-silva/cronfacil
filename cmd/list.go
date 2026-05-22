@@ -4,8 +4,11 @@ import (
 	"cronfacil/internal/repository"
 	"fmt"
 
+	"github.com/robfig/cron/v3"
 	"github.com/spf13/cobra"
 )
+
+var Cron *cron.Cron
 
 var listCmd = &cobra.Command{
 	Use:   "list",
@@ -16,12 +19,12 @@ var listCmd = &cobra.Command{
 		jobs, err := repository.ListJobs()
 
 		if err != nil {
-			fmt.Println("Falha!")
-			panic(err)
+			fmt.Printf("Erro ao listar jobs: %v\n", err)
+			return
 		}
 
 		for _, job := range jobs {
-			fmt.Printf("* name: %s\n createdAt: %s", job.Name, job.CreatedAt)
+			fmt.Printf("ID: %d, Nome: %s, Cron: %s\n", job.ID, job.Name, job.Interval)
 		}
 	},
 }
