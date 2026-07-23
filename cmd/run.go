@@ -1,12 +1,7 @@
 package cmd
 
 import (
-	"fmt"
-	"cronfacil/internal/models"
-	"cronfacil/internal/repository"
-	"net/http"
-
-	"github.com/robfig/cron/v3"
+	"cronfacil/internal/scheduler"
 
 	"github.com/spf13/cobra"
 )
@@ -17,7 +12,10 @@ var runCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		jobName := args[0]
-		scheduler.Start(jobName)
+		_, err := scheduler.Start(jobName)
+		if err != nil {
+			panic(err)
+		}
 	},
 }
 

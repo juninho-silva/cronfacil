@@ -32,3 +32,15 @@ func ListJobs() ([]models.Job, error) {
 
 	return jobs, nil
 }
+
+func GetJobByName(jobName string) (*models.Job, error) {
+	collection := infra.DB.Collection("jobs")
+
+	var job models.Job
+	err := collection.FindOne(context.Background(), map[string]interface{}{"name": jobName}).Decode(&job)
+	if err != nil {
+		return nil, err
+	}
+
+	return &job, nil
+}

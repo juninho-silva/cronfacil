@@ -30,29 +30,30 @@ func StartAll() {
 	fmt.Println("🚀 Scheduler iniciado")
 }
 
-func Start(jobName string) {
+func Start(jobName string) (*models.Job, error) {
 	job, err := repository.GetJobByName(jobName)
 
 	if err != nil {
-			panic(err)
-		}
+		return nil, err
+	}
 
-		if !job.Active {
-			fmt.Printf("O job '%s' está inativo. Ative-o para executá-lo.\n", jobName)
-			return
-		}
+	if !job.Active {
+		fmt.Printf("O job '%s' está inativo. Ative-o para executá-lo.\n", jobName)
+		return nil, fmt.Errorf("job '%s' is inactive", jobName)
+	}
 
-		Cron = cron.New()
+	Cron = cron.New()
 
-		registerJob(job)
+	registerJob(*job)
 
-		Cron.Start()
+	Cron.Start()
+	return job, nil
 }
 
 func registerJob(job models.Job) {
 	_, err := Cron.AddFunc(job.Interval, func() {
 		fmt.Printf("▶ Executando job: %s\n", job.Name)
-		
+
 		resp, err := http.Get(job.Endpoint)
 
 		log := models.Log{
@@ -76,4 +77,3 @@ func registerJob(job models.Job) {
 		fmt.Println("Erro ao registrar job:", err)
 	}
 }
-
