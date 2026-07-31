@@ -24,7 +24,7 @@ var listCmd = &cobra.Command{
 		}
 
 		for _, job := range jobs {
-			fmt.Printf("ID: %d, Nome: %s, Cron: %s\n", job.ID, job.Name, job.Interval)
+			fmt.Printf("ID: %s, Nome: %s, Cron: %s\n", job.ID, job.Name, job.Interval)
 		}
 	},
 }
